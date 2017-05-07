@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">Mid Notepad</string>
+    <string name="action_settings">设置</string>
+    <string name="action_aboutus">关于我们</string>
+    <string name="action_backup">备份</string>
+    <string name="action_search">搜索</string>
+    <string name="title_activity_edit">编辑</string>
+    <string name="search_hint">在 我的记事 中搜索...</string>
+    <string name="title_activity_settings">设置</string>
+    <string name="title_activity_search">搜索结果</string>
+
+
+
+    <string-array name="choose_text_size">
+        <item>小</item>
+        <item>中</item>
+        <item>大</item>
+        <item>超大</item>
+    </string-array>
+
+    <string-array name="choose_value_text_size">
+        <item>s</item>
+        <item>m</item>
+        <item>l</item>
+        <item>xl</item>
+    </string-array>
+
+    <string-array name="choose_text_color">
+        <item>灰色</item>
+        <item>黄色</item>
+        <item>白色</item>
+        <item>蓝色</item>
+    </string-array>
+
+    <string-array name="choose_value_text_color">
+        <item>gray</item>
+        <item>yellow</item>
+        <item>white</item>
+        <item>blue</item>
+    </string-array>
+</resources>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="备份">
+
+        <PreferenceScreen android:summary="云端备份需要登录"
+            android:title="登录"
+            >
+            <EditTextPreference
+            android:summary="An example that uses an edit text dialog"
+            android:key="UsernameKey"
+            android:title="用户名" />
+            <EditTextPreference
+                android:summary="An example that uses an edit text dialog"
+                android:key="PasswordKey"
+                android:title="密码" />
+
+        </PreferenceScreen>
+
+        <PreferenceScreen android:summary="将文档保存在本地备份"
+            android:title="本地备份"
+            >
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="isSecondCheck"
+                android:summary="Preference that is on next screen but same hierarchy"
+                android:title="Toggle preferences" />
+        </PreferenceScreen>
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="isAutoBackUp"
+            android:summaryOff="自动备份关闭"
+            android:summaryOn="自动备份打开"
+            android:title="自动备份" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="外观">
+
+        <ListPreference
+            android:summary="选择显示的字体大小"
+            android:key="Text_Size_Key"
+            android:title="字体大小"
+            android:dialogTitle="Choose one"
+            android:entries="@array/choose_text_size"
+            android:entryValues="@array/choose_value_text_size"
+            />
+
+        <ListPreference
+            android:summary="选择背景颜色"
+            android:key="Text_Color_ListKey"
+            android:title="背景颜色 "
+            android:dialogTitle="Choose one"
+            android:entries="@array/choose_text_color"
+            android:entryValues="@array/choose_value_text_color"
+            android:defaultValue="white"
+            />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="信息">
+
+        <PreferenceScreen android:summary="About us"
+            android:title="关于我们"
+             >
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="isSecondCheck"
+                android:summary="Preference that is on next screen but same hierarchy"
+                android:title="Toggle preferences" />
+        </PreferenceScreen>
+
+
+        <PreferenceScreen
+            android:summary="如果你有新的建议"
+            android:title="联系我们" >
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="http://www.baidu.com" />
+        </PreferenceScreen>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Preference attributes">
+        <CheckBoxPreference
+            android:key="parentKey"
+            android:defaultValue="false"
+            android:summary="This is visually a parent"
+            android:title="Parent checkbox preference" />
+
+        <CheckBoxPreference
+            android:key="childKey"
+            android:defaultValue="false"
+            android:dependency="parentKey"
+            android:summary="This is visually a child"
+            android:title="Child checkbox preference" />
+    </PreferenceCategory>
+
+
+
+</PreferenceScreen>

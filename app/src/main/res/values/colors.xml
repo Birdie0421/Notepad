@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#607D8B</color>
+    <color name="colorPrimaryDark">#455A64</color>
+    <color name="colorAccent">#FFC107</color>
+
+    <color name="textTitle">#B3000000</color>
+    <color name="textDate">#4D000000</color>
+    <color name="textContent">#4D000000</color>
+    <color name="textHint">#33000000</color>
+
+    <color name="textContent1">#BDBDBD</color>
+    <color name="textTitle1">#757575</color>
+
+    <color name="colorNormal">#FFC107</color>
+    <color name="colorPressed">#FFA000</color>
+    <color name="colorRipple">#33728dff</color>
+
+    <color name="black_semi_transparent">#B2000000</color>
+    <color name="gray_semi_transparent">#A2757575</color>
+    <color name="background">#e5e5e5</color>
+    <color name="half_black">#808080</color>
+    <color name="white">#fafafa</color>
+    <color name="white_pressed">#f1f1f1</color>
+    <color name="pink">#e91e63</color>
+    <color name="pink_pressed">#ec407a</color>
+    <color name="blue_semi_transparent">#805677fc</color>
+    <color name="blue_semi_transparent_pressed">#80738ffe</color>
+
+    <color name="color_category_normal">#ff44bb66</color>
+    <color name="color_category_important">#ff44aaff</color>
+
+    <color name="color_category_normal1">#ff90a4ae</color>
+    <color name="color_category_normal2">#ffc62828</color>
+    <color name="color_category_normal3">#ffbb7733</color>
+    <color name="color_category_normal4">#ffff6655</color>
+    <color name="color_category_normal5">#ffffbb44</color>
+    <color name="color_category_normal6">#ff44aaff</color>
+
+</resources>

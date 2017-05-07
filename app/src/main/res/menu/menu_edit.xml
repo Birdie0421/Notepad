@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="edu.fjnu.birdie.notemd_Mid.noteEdit">
+
+
+
+    <item
+        android:id="@+id/ab_add_category"
+        android:orderInCategory="80"
+        android:title="add_category"
+        android:icon="@drawable/ic_style_white_18dp"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/ab_save"
+        android:orderInCategory="100"
+        android:title="action_search"
+        android:icon="@drawable/ic_save_white_18dp"
+        app:showAsAction="ifRoom"/>
+
+
+
+</menu>
