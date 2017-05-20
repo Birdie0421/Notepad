@@ -176,7 +176,7 @@ String dateNum = sdf.format(date);
 具体搜索的实现代码不难,执行一下代码就可以将查询到的内容放到Cursor里,然后用适配器进行适配就可以在列表中显示了
 
 ```
- String  sql = "select * from note where category !='"+CATEGORY_DELETED+"' and content like ?";
+String  sql = "select * from note where category !='"+CATEGORY_DELETED+"' and content like ?";
 
 Cursor cursor = dbread.rawQuery(sql, new String[]{"%"+word+"%"});
 ```
@@ -576,7 +576,9 @@ public static String getPath(final Context context, final Uri uri) {
 
 为了使输入界面更加简洁,可以通过 在<EditText>中,加入
 
- ```   android:background="@null"```
+ ``` 
+ android:background="@null"
+ ```
 
 去掉输入框下的横线
 
