@@ -164,9 +164,11 @@ String dateNum = sdf.format(date);
 ---
 ##### 查询内容
 查询的方法在工具栏点击查询按钮即可调出searchview,然后输入所需查询的文字然后点击键盘的搜索即可查询内容包含关键词的记录
+
 ![查询1.jpg](http://upload-images.jianshu.io/upload_images/6080696-9d0ab6adb5de4b72.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 查询"在"的结果
+
 ![查询结果.jpg](http://upload-images.jianshu.io/upload_images/6080696-dd62753ca0db7f8f.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 实现
@@ -297,7 +299,8 @@ builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 对点击按钮的事件创建监听
 
 ```
-Intent getImage  = new Intent("android.intent.action.GET_CONTENT");               getImage.addCategory(Intent.CATEGORY_OPENABLE);
+Intent getImage  = new Intent("android.intent.action.GET_CONTENT");               
+getImage.addCategory(Intent.CATEGORY_OPENABLE);
 getImage.setType("image/*");
 startActivityForResult(getImage, 1);
 ```
