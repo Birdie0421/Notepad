@@ -586,6 +586,7 @@ public static String getPath(final Context context, final Uri uri) {
 - 同时对设置菜单,关于界面进行了初步的设计,但大部分功能都未实现
 
 ![3g_1.jpg](http://upload-images.jianshu.io/upload_images/6080696-b990b02b989a387c.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
 ![3g_2.jpg](http://upload-images.jianshu.io/upload_images/6080696-19db5f42b0d2c1b8.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 后续的版本都是在第三次界面修改后基本没有太大的变化,主要实在功能上的变化
@@ -637,21 +638,26 @@ public static String getPath(final Context context, final Uri uri) {
 (在回收站中的删除没有提示,逻辑上如果你已经进到回收站并确认要删除那条被删除过的记录,应该不会是误操作)
 
 未保存提示
+
 ![未保存提示.jpg](http://upload-images.jianshu.io/upload_images/6080696-53c3da29f775bd68.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 删除提示
+
 ![删除提示.jpg](http://upload-images.jianshu.io/upload_images/6080696-e7a77da48e4ce1b1.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 空界面提示
 在没有记录的首页,搜索不到结果的搜索页面,没有回收记录的回收站,不会因为没有记录而空在那里,而是会有一定的文字提醒
 
 没有记录会提示点击右下角添加
+
 ![nullmain.jpg](http://upload-images.jianshu.io/upload_images/6080696-6445396d02a25b59.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 无搜索结果
+
 ![nullsearch.jpg](http://upload-images.jianshu.io/upload_images/6080696-71e7fb9570cc9a29.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 无回收文件
+
 ![nulldelete.jpg](http://upload-images.jianshu.io/upload_images/6080696-45540138f186abb9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
