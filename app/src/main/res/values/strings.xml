@@ -3,12 +3,14 @@
     <string name="action_settings">设置</string>
     <string name="action_aboutus">关于我们</string>
     <string name="action_backup">备份</string>
+    <string name="action_deleted">回收站</string>
     <string name="action_search">搜索</string>
     <string name="title_activity_edit">编辑</string>
     <string name="search_hint">在 我的记事 中搜索...</string>
     <string name="title_activity_settings">设置</string>
     <string name="title_activity_search">搜索结果</string>
 
+    <string name="content_about_us">\t\t\t记事本的第一个版本,需要完善的还有很多,完成了基本的增删改查的功能,以及在正文中插入图片,对内容进行分类,根据内容查找等基本功能,对于删除添加了回收站机制,可在回收站中对已删除的内容进行恢复或者永久删除</string>
 
 
     <string-array name="choose_text_size">
@@ -26,16 +28,38 @@
     </string-array>
 
     <string-array name="choose_text_color">
-        <item>灰色</item>
-        <item>黄色</item>
-        <item>白色</item>
-        <item>蓝色</item>
-    </string-array>
+    <item>灰色</item>
+    <item>黄色</item>
+    <item>白色</item>
+    <item>蓝色</item>
+</string-array>
 
     <string-array name="choose_value_text_color">
         <item>gray</item>
         <item>yellow</item>
         <item>white</item>
         <item>blue</item>
+    </string-array>
+
+
+    <string-array name="choose_delete_recovery">
+        <item>恢复</item>
+        <item>删除</item>
+    </string-array>
+
+    <string-array name="choose_value_delete_recovery">
+        <item>recovery</item>
+        <item>drop</item>
+    </string-array>
+
+
+    <string-array name="change_delete_recovery">
+        <item>分类</item>
+        <item>删除</item>
+    </string-array>
+
+    <string-array name="change_value_delete_recovery">
+        <item>change</item>
+        <item>delete</item>
     </string-array>
 </resources>

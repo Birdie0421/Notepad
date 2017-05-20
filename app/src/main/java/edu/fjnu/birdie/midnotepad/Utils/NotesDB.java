@@ -35,6 +35,10 @@ public class NotesDB extends SQLiteOpenHelper {
                 + COLUMN_NAME_NOTE_DATE + " TEXT NOT NULL DEFAULT\"\"" + ")";
         Log.d("SQL", sql);
         db.execSQL(sql);
+
+        //初始化数据 ==提供帮助信息
+
+
     }
 
     @Override

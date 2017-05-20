@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -27,11 +28,14 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import edu.fjnu.birdie.midnotepad.Utils.DatabaseManager;
 import edu.fjnu.birdie.midnotepad.Utils.NoteCursorAdapter;
 import edu.fjnu.birdie.midnotepad.Utils.NotesDB;
@@ -45,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
     public static final String CATEGORY_MEMO = "memo";
     public static final String CATEGORY_NOTE = "note";
     public static final String CATEGORY_SCHEDULE = "schedule";
-
 
     private String[] category = new String[] { "默认", "重要", "备忘", "笔记", "日程" };
 
@@ -91,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
         DB = new NotesDB(this);
         dbManager = new DatabaseManager(this);
         dbread = DB.getReadableDatabase();
+
         RefreshNotesList();
 
         listview.setOnItemClickListener(this);
@@ -99,96 +103,70 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
 
     }
 
-    //刷新页面
+    @Override
+    protected void onResume(){
+        super.onResume();
+        RefreshNotesList();
+    }
+
+    //刷新页面  重新适配Listview
     public void RefreshNotesList(){
-        int size = datalist.size();
-        if(size>0){
-            datalist.removeAll(datalist);
-            simpleAdapter.notifyDataSetChanged();
-            listview.setAdapter(simpleAdapter);
-        }
+        isNoteNull();
         String sql = "select * from note where category !='"+CATEGORY_DELETED+"'";
         Cursor cursor = dbManager.executeSql(sql, null);
-        //SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
-        //        R.layout.listview, cursor, new String[] {"title","content","date"},
-        //       new int[] { R.id.tv_title,R.id.tv_content,R.id.tv_date }, 0);
         NoteCursorAdapter adapter = new NoteCursorAdapter(this,
                 R.layout.listview, cursor, new String[] {"title","content","date"},
                 new int[] { R.id.tv_title,R.id.tv_content,R.id.tv_date });
         listview.setAdapter(adapter);
-
-
     }
 
-    //从数据库里读数据
-    private  List<Map<String,Object>> getData(){
-        Cursor cursor = dbread.query("note",null,"content!=\"\"",null,null,null,null);
-        while(cursor.moveToNext()){
-            String name = cursor.getString(cursor.getColumnIndex("content"));
-            String title = cursor.getString(cursor.getColumnIndex("title"));
-            String date = cursor.getString(cursor.getColumnIndex("date"));
-            Map<String,Object> map = new HashMap<String,Object>();
-            map.put("tv_title",title);
-            map.put("tv_content",name);
-            map.put("tv_date",date);
-            datalist.add(map);
-        }
-        cursor.close();
-        return datalist;
-    }
-
-
-
-
+    //屏幕滑动
     @Override
     public void onScroll(AbsListView arg0,int arg1,int arg2,int arg3){
-
+//            Log.d("onScroll","屏幕正在滑动");
     }
 
+    //屏幕滑动状态
     @Override
     public void onScrollStateChanged(AbsListView arg0,int arg1){
-        switch (arg1){
-            case SCROLL_STATE_FLING:
-                Log.i("main", "用户在手指离开屏幕之前，由于用力的滑了一下，视图能依靠惯性继续滑动");
-            case SCROLL_STATE_IDLE:
-                Log.i("main", "视图已经停止滑动");
-            case SCROLL_STATE_TOUCH_SCROLL:
-                Log.i("main", "手指没有离开屏幕，试图正在滑动");
-        }
+//        switch (arg1){
+//            case SCROLL_STATE_FLING:
+//                Log.i("main", "用户在手指离开屏幕之前，由于用力的滑了一下，视图能依靠惯性继续滑动");
+//            case SCROLL_STATE_IDLE:
+//                Log.i("main", "视图已经停止滑动");
+//            case SCROLL_STATE_TOUCH_SCROLL:
+//                Log.i("main", "手指没有离开屏幕，试图正在滑动");
+//        }
     }
 
+    //点击ListView
     @Override
     public void onItemClick(AdapterView<?> arg0,View arg1,int arg2,long arg3){
         noteEdit.ENTER_STATE = 1;
         Log.d("Onclick_STATE",noteEdit.ENTER_STATE + "");
         Log.d("position",arg2+"");
 
-
-        Cursor content =  (Cursor) listview.getItemAtPosition(arg2);
+        Cursor content = (Cursor) listview.getItemAtPosition(arg2);
         String content1 = content.getString(content.getColumnIndex("content"));
-        Cursor title =   (Cursor) listview.getItemAtPosition(arg2);
-        String title1 = title.getString( title.getColumnIndex("title"));
+        Cursor title = (Cursor) listview.getItemAtPosition(arg2);
+        String title1 = title.getString(title.getColumnIndex("title"));
         Cursor id = (Cursor) listview.getItemAtPosition(arg2);
-        String No = id.getString( title.getColumnIndex("_id"));
+        String No = id.getString(title.getColumnIndex("_id"));
+        Log.d("Content", content1);
+        Log.d("Title", title1);
+        Log.d("_Id", No);
+        Log.d("arg2",arg2+"");
+        Log.d("arg3",arg3+"");
 
-        Log.d("Content",content1);
-        Log.d("Title",title1);
-        Log.d("_Id",No);
-        //使用这个操作会删除内容相同的不同条目
-       // Cursor c = dbread.query("note",null,"content="+"'"+content1+"'",null,null,null,null);
-      //  while (c.moveToNext()){
-      //      String No = c.getString(c.getColumnIndex("_id"));
-            Log.d("TEXT",No);
-            Intent myIntent = new Intent();
-            Bundle bundle = new Bundle();
-            bundle.putString("info",content1);
-            bundle.putString("info_title",title1);
-            noteEdit.id = Integer.parseInt(No);
-            myIntent.putExtras(bundle);
-            myIntent.setClass(MainActivity.this,noteEdit.class);
-            startActivityForResult(myIntent,1);
-
-      //  }
+        Log.d("TEXT", No);
+        Intent myIntent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putString("info", content1);
+        bundle.putString("info_title", title1);
+        noteEdit.id = Integer.parseInt(No);
+        myIntent.putExtras(bundle);
+        myIntent.setClass(MainActivity.this, noteEdit.class);
+        startActivityForResult(myIntent, 1);
     }
 
     @Override
@@ -199,47 +177,45 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
         }
     }
 
-    //长按删除
+    //长按删除 或改变标签
     @Override
     public boolean onItemLongClick(AdapterView<?> arg0,View arg1,int arg2,long arg3){
         final int n = arg2;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("删除");
-        builder.setMessage("确认删除?");
-        builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                Cursor content =  (Cursor) listview.getItemAtPosition(n);
-                String content1 = content.getString(content.getColumnIndex("content"));
-                String id = content.getString(content.getColumnIndex("_id"));
-
-                //String content = listview.getItemAtPosition(n)+"";
-               // String content1= content.substring(content.indexOf("=")+1,content.indexOf(","));
-           //     Cursor c = dbread.query("note",null,"content="+"'"+content1+"'",null,null,null,null);
-           //     while(c.moveToNext()){
-           //         String id = c.getString(c.getColumnIndex("_id"));
-                    String setCategory = "update note set category ='" + CATEGORY_DELETED + "' where _id=" + id;
-                  //  String sql_del = "update note set content='' where _id = "+id;
-                    Log.d("DELETE",setCategory);
-                    dbread.execSQL(setCategory);
-                    RefreshNotesList();
-            }
-        });
-        builder.setNegativeButton("否", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
+        builder.setItems(R.array.change_delete_recovery,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int which) {
+                        String action[]= getResources()
+                                .getStringArray(R.array.change_value_delete_recovery);
+                        switch(action[which]){
+                            case "change":{
+                                Cursor content = (Cursor) listview.getItemAtPosition(n);
+                                changeCategory(content);
+                                //Toast.makeText(DeletedActivity.this, "恢复 "+content.getString(content.getColumnIndex("title")), Toast.LENGTH_SHORT).show();
+                                RefreshNotesList();
+                                break;
+                            }
+                            case "delete":{
+                                Cursor content = (Cursor) listview.getItemAtPosition(n);
+                                noteDelete(content);
+                                RefreshNotesList();
+                                //Toast.makeText(MainActivity.this, "删除", Toast.LENGTH_SHORT).show();
+                                break;
+                            }
+                        }
+                    }
+                });
         builder.create();
         builder.show();
+
         return true;
     }
 
+    //菜单项
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        //搜索栏
         SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView =
@@ -251,8 +227,6 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-//                Log.d("toSearch",query);
-//                searchData(query);
                 Log.d("Searching",query);
                 Intent intent = new Intent(MainActivity.this,SearchActivity.class);
                 intent.putExtra("word",query);
@@ -269,6 +243,7 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
         return super.onCreateOptionsMenu(menu);
     }
 
+    //菜单栏响应
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -281,79 +256,134 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
             case R.id.action_settings:{
                 Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
                 startActivity(intent);
+                break;
             }
-            case R.id.action_backup:{
-
+            case R.id.action_deleted:{
+                Intent intent = new Intent(MainActivity.this,DeletedActivity.class);
+                startActivity(intent);
+                break;
             }
             case R.id.action_aboutus:{
-
+                Intent intent = new Intent(MainActivity.this,AboutUsActivity.class);
+                startActivity(intent);
+                break;
             }
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    //如果列表项为空,则显示背景和文字
+    public boolean isNoteNull(){
+        String sql = "select * from note where category !='"+CATEGORY_DELETED+"'";
+        Log.d("sql",sql);
+        Cursor c = dbManager.executeSql(sql, null);
+        int number = c.getCount();
+        Log.d("Note number",number+"");
+        if(number == 0){
+            ListView listView = (ListView)findViewById(R.id.notelist);
+            TextView textView = (TextView)findViewById(R.id.main_text);
+            listView.setVisibility(View.GONE);
+            textView.setVisibility(View.VISIBLE);
+            return true;
+        }else{
+            ListView listView = (ListView)findViewById(R.id.notelist);
+            TextView textView = (TextView)findViewById(R.id.main_text);
+            textView.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
+            return false;
+        }
+    }
 
 
-//    //设置分组
-//    public void addCategory(){
-//        //Toast.makeText(this,"add_catagory",Toast.LENGTH_SHORT).show();
-//        //{ "默认", "重要", "备忘", "笔记", "日程" };
-//
-//            Cursor content =  (Cursor) listview.getItemAtPosition(n);
-//            String content1 = content.getString(content.getColumnIndex("content"));
-//            String id = content.getString(content.getColumnIndex("_id"));
-//
-//            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
-//            builder.setTitle("设置分组");
-//            builder.setSingleChoiceItems(category, 0, new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                    int choose = which;
-//                    switch (which) {
-//                        case 0: {
-//                            setCategory = "update note set category ='" + CATEGORY_NORMAL + "' where _id=" + id;
-//                            Log.d("EXE", setCategory);
-//                            break;
-//                        }
-//                        case 1: {
-//                            setCategory = "update note set category ='" + CATEGORY_IMPORTANT + "' where _id=" + id;
-//                            Log.d("EXE", setCategory);
-//                            break;
-//                        }
-//                        case 2: {
-//                            setCategory = "update note set category ='" + CATEGORY_MEMO + "' where _id=" + id;
-//                            Log.d("EXE", setCategory);
-//                            break;
-//                        }
-//                        case 3: {
-//                            setCategory = "update note set category ='" + CATEGORY_NOTE + "' where _id=" + id;
-//                            Log.d("EXE", setCategory);
-//                            break;
-//                        }
-//                        case 4: {
-//                            setCategory = "update note set category ='" + CATEGORY_SCHEDULE + "' where _id=" + id;
-//                            Log.d("EXE", setCategory);
-//                            break;
-//                        }
-//                    }
-//                }
-//            });
-//            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                    dbread.execSQL(setCategory);
-//                }
-//            });
-//            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//
-//                }
-//            });
-//            builder.create();
-//            builder.show();
-//    }
+
+    //设置分组
+    public void changeCategory(Cursor content){
+        //Toast.makeText(this,"add_catagory",Toast.LENGTH_SHORT).show();
+        //{ "默认", "重要", "备忘", "笔记", "日程" };
+            String content1 = content.getString(content.getColumnIndex("content"));
+            final String id = content.getString(content.getColumnIndex("_id"));
+
+            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+            builder.setTitle("设置分组");
+            builder.setSingleChoiceItems(category, 0, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    int choose = which;
+                    switch (which) {
+                        case 0: {
+                            setCategory = "update note set category ='" + CATEGORY_NORMAL + "' where _id=" + id;
+                            Log.d("EXE", setCategory);
+                            break;
+                        }
+                        case 1: {
+                            setCategory = "update note set category ='" + CATEGORY_IMPORTANT + "' where _id=" + id;
+                            Log.d("EXE", setCategory);
+                            break;
+                        }
+                        case 2: {
+                            setCategory = "update note set category ='" + CATEGORY_MEMO + "' where _id=" + id;
+                            Log.d("EXE", setCategory);
+                            break;
+                        }
+                        case 3: {
+                            setCategory = "update note set category ='" + CATEGORY_NOTE + "' where _id=" + id;
+                            Log.d("EXE", setCategory);
+                            break;
+                        }
+                        case 4: {
+                            setCategory = "update note set category ='" + CATEGORY_SCHEDULE + "' where _id=" + id;
+                            Log.d("EXE", setCategory);
+                            break;
+                        }
+                    }
+                }
+            });
+            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dbread.execSQL(setCategory);
+                    RefreshNotesList();
+                }
+            });
+            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            builder.create();
+            builder.show();
+    }
+
+    public void noteDelete(Cursor content){
+        final Cursor c1 = content;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //长按直接删除
+        builder.setTitle("删除");
+        builder.setMessage("确认删除?");
+        builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Cursor content =  (Cursor) listview.getItemAtPosition(n);
+                Cursor content = c1;
+                String id = c1.getString(content.getColumnIndex("_id"));
+                String setCategory = "update note set category ='" + CATEGORY_DELETED + "' where _id=" + id;
+                Log.d("DELETE",setCategory);
+                dbread.execSQL(setCategory);
+                RefreshNotesList();
+            }
+        });
+        builder.setNegativeButton("否", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.create();
+        builder.show();
+    }
+
 
 
 }

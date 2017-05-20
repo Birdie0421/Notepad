@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.LinearLayout;
 
@@ -21,6 +22,8 @@ public class SettingsActivity extends AppCompatActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preference_settings);
+
+            //PreferenceScreen aboutus =(PreferenceScreen)findPreference();
 
 
 

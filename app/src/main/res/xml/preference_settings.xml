@@ -5,6 +5,7 @@
 
         <PreferenceScreen android:summary="云端备份需要登录"
             android:title="登录"
+            android:enabled="false"
             >
             <EditTextPreference
             android:summary="An example that uses an edit text dialog"
@@ -60,14 +61,16 @@
 
     <PreferenceCategory android:title="信息">
 
-        <PreferenceScreen android:summary="About us"
+        <PreferenceScreen
+            android:key="About_Us_Key"
+            android:summary="About us"
             android:title="关于我们"
              >
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="isSecondCheck"
-                android:summary="Preference that is on next screen but same hierarchy"
-                android:title="Toggle preferences" />
+            <intent
+                android:action="android.intent.action.MAIN"
+                android:targetPackage="edu.fjnu.birdie.midnotepad"
+                android:targetClass="edu.fjnu.birdie.midnotepad.AboutUsActivity"
+                />
         </PreferenceScreen>
 
 

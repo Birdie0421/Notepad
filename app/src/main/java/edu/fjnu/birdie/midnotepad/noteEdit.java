@@ -131,7 +131,6 @@ public class noteEdit extends AppCompatActivity {
 
         //将内容中的图片加载出来
         SpannableString ss = new SpannableString(last_content);
-        //Pattern p= Pattern.compile("<image>/external/images/media/.+(//.+//)*</image>");
         Pattern p= Pattern.compile("<img>.*<img>");
         Matcher m=p.matcher(last_content);
         while(m.find()){
@@ -156,7 +155,10 @@ public class noteEdit extends AppCompatActivity {
 
 
 
-        btn_addImage=(FloatingActionButton)findViewById(R.id.btn_add_image);
+
+
+
+                btn_addImage=(FloatingActionButton)findViewById(R.id.btn_add_image);
         btn_addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -190,7 +192,6 @@ public class noteEdit extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-      //  setBackground();
     }
 
     //5.0以上使用toolbar来进行保存和取消
@@ -224,7 +225,7 @@ public class noteEdit extends AppCompatActivity {
                     SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd-HH-mm");
                     String dateNum1 = sdf.format(date);
                     //title = "新建记事"+ dateNum1;
-                     title = "新建记事"+count;
+                     title = "新建记事";
                     //title = "新建记事";
                 }
                 //insert into note values("count,'title','content','dataNum')
@@ -241,7 +242,7 @@ public class noteEdit extends AppCompatActivity {
                 //dbread.execSQL(sql);
                 //insert方法插入
                 ContentValues values  = new ContentValues();
-                values.put(COLUMN_NAME_ID ,count);
+                //values.put(COLUMN_NAME_ID ,count);
                 values.put(COLUMN_NAME_NOTE_TITLE ,title);
                 values.put(COLUMN_NAME_NOTE_CONTENT ,content);
                 values.put(COLUMN_NAME_NOTE_DATE ,dateNum);
@@ -262,6 +263,7 @@ public class noteEdit extends AppCompatActivity {
             ContentValues values  = new ContentValues();;
             values.put(COLUMN_NAME_NOTE_TITLE ,title);
             values.put(COLUMN_NAME_NOTE_CONTENT ,content);
+            values.put(COLUMN_NAME_NOTE_DATE,dateNum);
             String where = "_id="+id;
             dbread.update(TABLE_NAME_NOTES ,values ,where, null);
         }
@@ -595,7 +597,6 @@ public class noteEdit extends AppCompatActivity {
         et_content.setSelection(start + enter.length());
     }
     //压缩图片
-
     public Bitmap resizeImage(Bitmap bitmap)
     {
         if(bitmap != null) {

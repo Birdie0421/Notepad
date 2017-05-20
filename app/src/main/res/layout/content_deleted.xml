@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="edu.fjnu.birdie.midnotepad.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:context="edu.fjnu.birdie.midnotepad.SearchActivity"
+    tools:showIn="@layout/activity_deleted">
 
     <ListView
-        android:id="@+id/notelist"
-        android:visibility="gone"
+        android:id="@+id/deletedlist"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        >
     </ListView>
 
     <TextView
-        android:id="@+id/main_text"
+        android:id="@+id/deleted_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="\n快点击右下角 + 创建一条新的便签吧">
+        android:text="\n当前回收站为空">
     </TextView>
 
-</LinearLayout>
+</RelativeLayout>

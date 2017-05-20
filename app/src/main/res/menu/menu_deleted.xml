@@ -6,16 +6,10 @@
 
 
     <item
-        android:id="@+id/ab_add_category"
-        android:orderInCategory="80"
-        android:title="add_category"
-        android:icon="@drawable/ic_bookmark_white_18dp"
-        app:showAsAction="ifRoom"/>
-    <item
-        android:id="@+id/ab_save"
+        android:id="@+id/ab_delete_forever"
         android:orderInCategory="100"
         android:title="action_search"
-        android:icon="@drawable/ic_save_white_18dp"
+        android:icon="@drawable/ic_delete_forever_white_18dp"
         app:showAsAction="ifRoom"/>
 
 

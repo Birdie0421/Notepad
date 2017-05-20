@@ -11,6 +11,9 @@
         android:layout_height="40dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
+        app:aiv_BoarderColor="@color/colorRipple"
+        app:aiv_BoarderWidth="2dp"
+        app:aiv_ShowBoarder="false"
         />
 
     <LinearLayout

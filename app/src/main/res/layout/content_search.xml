@@ -11,7 +11,16 @@
     <ListView
         android:id="@+id/searchlist"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="gone">
     </ListView>
+
+    <TextView
+        android:id="@+id/search_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="\n没有找到和该内容有关的条目\n">
+    </TextView>
 
 </RelativeLayout>
