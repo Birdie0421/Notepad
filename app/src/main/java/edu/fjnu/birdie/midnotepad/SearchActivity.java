@@ -15,23 +15,23 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.idescout.sql.SqlScoutServer;
+
 import edu.fjnu.birdie.midnotepad.Utils.DatabaseManager;
 import edu.fjnu.birdie.midnotepad.Utils.NoteCursorAdapter;
+import edu.fjnu.birdie.midnotepad.Utils.NotePad;
 import edu.fjnu.birdie.midnotepad.Utils.NotesDB;
 
 public class SearchActivity extends AppCompatActivity implements OnScrollListener,
                          OnItemClickListener , OnItemLongClickListener {
 
-    public static final String CATEGORY_DELETED = "deleted";
-
     private ListView searchview;
     private NotesDB DB;
     private SQLiteDatabase dbread;
-    DatabaseManager dbManager;
+    //DatabaseManager dbManager;
 
     private String word;
 
@@ -41,6 +41,7 @@ public class SearchActivity extends AppCompatActivity implements OnScrollListene
         setContentView(R.layout.activity_search);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        SqlScoutServer.create(this, getPackageName());
 
 
         Bundle myBundle = this.getIntent().getExtras();
@@ -53,7 +54,7 @@ public class SearchActivity extends AppCompatActivity implements OnScrollListene
 
 
         DB = new NotesDB(this);
-        dbManager = new DatabaseManager(this);
+        //dbManager = new DatabaseManager(this);
         dbread = DB.getReadableDatabase();
 
         ShowSearchList();
@@ -61,8 +62,6 @@ public class SearchActivity extends AppCompatActivity implements OnScrollListene
         searchview.setOnItemClickListener(this);
         searchview.setOnItemLongClickListener(this);
         searchview.setOnScrollListener(this);
-
-
     }
 
     //执行搜索
@@ -73,7 +72,7 @@ public class SearchActivity extends AppCompatActivity implements OnScrollListene
      */
     public void ShowSearchList(){
         isSearchNull();
-        String  sql = "select * from note where category !='"+CATEGORY_DELETED+"' and content like ?";
+        String  sql = "select * from note where category !='"+ NotePad.CATEGORY_DELETED+"' and content like ?";
         Cursor cursor = dbread.rawQuery(sql, new String[]{"%"+word+"%"});
         //SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
         //SimpleCursor 最后一个参数 0
@@ -150,7 +149,7 @@ public class SearchActivity extends AppCompatActivity implements OnScrollListene
 
 
     public boolean isSearchNull(){
-        String sql = "select * from note where category !='"+CATEGORY_DELETED+"' and content like ?";
+        String sql = "select * from note where category !='"+ NotePad.CATEGORY_DELETED+"' and content like ?";
         Cursor c = dbread.rawQuery(sql, new String[]{"%"+word+"%"});
         Log.d("sql",sql);
         int number = c.getCount();

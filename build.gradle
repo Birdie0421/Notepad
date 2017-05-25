@@ -18,6 +18,15 @@ allprojects {
     }
 }
 
+allprojects {
+    repositories {
+        jcenter()
+        maven {
+            url 'http://www.idescout.com/maven/repo/'
+        }
+    }
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }

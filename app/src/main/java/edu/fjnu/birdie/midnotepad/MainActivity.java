@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -24,31 +23,21 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import com.idescout.sql.SqlScoutServer;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import edu.fjnu.birdie.midnotepad.Utils.DatabaseManager;
 import edu.fjnu.birdie.midnotepad.Utils.NoteCursorAdapter;
+import edu.fjnu.birdie.midnotepad.Utils.NotePad;
 import edu.fjnu.birdie.midnotepad.Utils.NotesDB;
 
 public class MainActivity extends AppCompatActivity implements OnScrollListener,
         OnItemClickListener , OnItemLongClickListener {
-
-    public static final String CATEGORY_DELETED = "deleted";
-    public static final String CATEGORY_NORMAL = "normal";
-    public static final String CATEGORY_IMPORTANT = "important";
-    public static final String CATEGORY_MEMO = "memo";
-    public static final String CATEGORY_NOTE = "note";
-    public static final String CATEGORY_SCHEDULE = "schedule";
 
     private String[] category = new String[] { "默认", "重要", "备忘", "笔记", "日程" };
 
@@ -61,8 +50,9 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
     private NotesDB DB;
     private SQLiteDatabase dbread;
     public SearchView searchView;
-    DatabaseManager dbManager;
+    //DatabaseManager dbManager;
     public String setCategory;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        SqlScoutServer.create(this, getPackageName());
 
         tv_content=(TextView)findViewById(R.id.tv_content);
         listview = (ListView)findViewById(R.id.notelist);
@@ -92,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
         });
 
         DB = new NotesDB(this);
-        dbManager = new DatabaseManager(this);
+        //dbManager = new DatabaseManager(this);
         dbread = DB.getReadableDatabase();
 
         RefreshNotesList();
@@ -112,9 +103,10 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
     //刷新页面  重新适配Listview
     public void RefreshNotesList(){
         isNoteNull();
-        String sql = "select * from note where category !='"+CATEGORY_DELETED+"'";
-        Cursor cursor = dbManager.executeSql(sql, null);
-        NoteCursorAdapter adapter = new NoteCursorAdapter(this,
+        String sql = "select * from note where category !='"+ NotePad.CATEGORY_DELETED+"'";
+        //Cursor cursor = dbManager.executeSql(sql, null);
+        Cursor cursor = dbread.rawQuery(sql, null);
+                NoteCursorAdapter adapter = new NoteCursorAdapter(this,
                 R.layout.listview, cursor, new String[] {"title","content","date"},
                 new int[] { R.id.tv_title,R.id.tv_content,R.id.tv_date });
         listview.setAdapter(adapter);
@@ -275,9 +267,10 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
 
     //如果列表项为空,则显示背景和文字
     public boolean isNoteNull(){
-        String sql = "select * from note where category !='"+CATEGORY_DELETED+"'";
+        String sql = "select * from note where category !='"+ NotePad.CATEGORY_DELETED+"'";
         Log.d("sql",sql);
-        Cursor c = dbManager.executeSql(sql, null);
+       // Cursor c = dbManager.executeSql(sql, null);
+        Cursor c = dbread.rawQuery(sql, null);
         int number = c.getCount();
         Log.d("Note number",number+"");
         if(number == 0){
@@ -312,27 +305,27 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
                     int choose = which;
                     switch (which) {
                         case 0: {
-                            setCategory = "update note set category ='" + CATEGORY_NORMAL + "' where _id=" + id;
+                            setCategory = "update note set category ='" + NotePad.CATEGORY_NORMAL + "' where _id=" + id;
                             Log.d("EXE", setCategory);
                             break;
                         }
                         case 1: {
-                            setCategory = "update note set category ='" + CATEGORY_IMPORTANT + "' where _id=" + id;
+                            setCategory = "update note set category ='" + NotePad.CATEGORY_IMPORTANT + "' where _id=" + id;
                             Log.d("EXE", setCategory);
                             break;
                         }
                         case 2: {
-                            setCategory = "update note set category ='" + CATEGORY_MEMO + "' where _id=" + id;
+                            setCategory = "update note set category ='" + NotePad.CATEGORY_MEMO + "' where _id=" + id;
                             Log.d("EXE", setCategory);
                             break;
                         }
                         case 3: {
-                            setCategory = "update note set category ='" + CATEGORY_NOTE + "' where _id=" + id;
+                            setCategory = "update note set category ='" + NotePad.CATEGORY_NOTE + "' where _id=" + id;
                             Log.d("EXE", setCategory);
                             break;
                         }
                         case 4: {
-                            setCategory = "update note set category ='" + CATEGORY_SCHEDULE + "' where _id=" + id;
+                            setCategory = "update note set category ='" + NotePad.CATEGORY_SCHEDULE + "' where _id=" + id;
                             Log.d("EXE", setCategory);
                             break;
                         }
@@ -368,7 +361,7 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
                 //Cursor content =  (Cursor) listview.getItemAtPosition(n);
                 Cursor content = c1;
                 String id = c1.getString(content.getColumnIndex("_id"));
-                String setCategory = "update note set category ='" + CATEGORY_DELETED + "' where _id=" + id;
+                String setCategory = "update note set category ='" + NotePad.CATEGORY_DELETED + "' where _id=" + id;
                 Log.d("DELETE",setCategory);
                 dbread.execSQL(setCategory);
                 RefreshNotesList();

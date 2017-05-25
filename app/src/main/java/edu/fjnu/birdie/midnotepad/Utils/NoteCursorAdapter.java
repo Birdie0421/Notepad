@@ -17,19 +17,11 @@ import edu.fjnu.birdie.midnotepad.R;
  */
 public class NoteCursorAdapter extends SimpleCursorAdapter {
 
-    public static final String CATEGORY_NORMAL = "normal";
-    public static final String CATEGORY_IMPORTANT = "important";
-    public static final String CATEGORY_MEMO = "memo";
-    public static final String CATEGORY_NOTE = "note";
-    public static final String CATEGORY_SCHEDULE = "schedule";
-    public static final String CATEGORY_DELETED = "deleted";
-
     public static final int COLOR_NORMAL = 0xff90a4ae;
     public static final int COLOR_IMPORTANT = 0xffc62828;
     public static final int COLOR_MEMO = 0xfffbc02d;
     public static final int COLOR_NOTE = 0xff26c6da;
     public static final int COLOR_SCHEDULE = 0xff5c6bc0;
-
 
     private Cursor _cursor;
     private Context _context;
@@ -51,39 +43,39 @@ public class NoteCursorAdapter extends SimpleCursorAdapter {
 //        Log.d("setImage","H");
 
         switch(Category){
-            case CATEGORY_NORMAL:{
+            case NotePad.CATEGORY_NORMAL:{
                 imageView.setTextAndColor(Head, COLOR_NORMAL);
                 //imageView.setImageResource(R.drawable.ic_stat_list_gray);
                 //imageView.set
                 //Log.d("NormalsetImage","H");
                 break;
             }
-            case CATEGORY_IMPORTANT:{
+            case NotePad.CATEGORY_IMPORTANT:{
                 imageView.setTextAndColor(Head, COLOR_IMPORTANT);
                 //imageView.setImageResource(R.drawable.ic_stat_priority_high_red);
                 //Log.d("ImportentsetImage","H");
                 break;
             }
-            case CATEGORY_MEMO:{
+            case NotePad.CATEGORY_MEMO:{
                 imageView.setTextAndColor(Head,COLOR_MEMO);
                 //imageView.setImageResource(R.drawable.ic_stat_access_alarm_yellow);
                 //Log.d("MEMOsetImage","H");
                 break;
             }
-            case CATEGORY_NOTE:{
+            case NotePad.CATEGORY_NOTE:{
                 imageView.setTextAndColor(Head, COLOR_NOTE);
                 //imageView.setImageResource(R.drawable.ic_stat_lock_outline_blue);
                 //imageView.setImageResource(R.drawable.ic_stat_edit_cyan);
                 //Log.d("NOTEsetImage","H");
                 break;
             }
-            case CATEGORY_SCHEDULE:{
+            case NotePad.CATEGORY_SCHEDULE:{
                 imageView.setTextAndColor(Head, COLOR_SCHEDULE);
                 //imageView.setImageResource(R.drawable.ic_stat_storage_blue);
                 //Log.d("SCHEDULEsetImage","H");
                 break;
             }
-            case CATEGORY_DELETED:{
+            case NotePad.CATEGORY_DELETED:{
                 imageView.setTextAndColor(Head, AvatarImageView.COLORS[0]);
                 //imageView.setImageResource(R.drawable.ic_stat_delete_brown);
                 //Log.d("ImportentsetImage","H");

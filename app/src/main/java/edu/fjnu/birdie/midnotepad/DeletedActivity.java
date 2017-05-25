@@ -9,31 +9,30 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.idescout.sql.SqlScoutServer;
+
 import edu.fjnu.birdie.midnotepad.Utils.DatabaseManager;
 import edu.fjnu.birdie.midnotepad.Utils.NoteCursorAdapter;
+import edu.fjnu.birdie.midnotepad.Utils.NotePad;
 import edu.fjnu.birdie.midnotepad.Utils.NotesDB;
 
 public class DeletedActivity extends AppCompatActivity implements AbsListView.OnScrollListener,
         AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
-    public static final String CATEGORY_DELETED = "deleted";
-    public static final String CATEGORY_NORMAL = "normal";
 
     private ListView deletedview;
     private NotesDB DB;
     private SQLiteDatabase dbread;
-    DatabaseManager dbManager;
+    //DatabaseManager dbManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +40,7 @@ public class DeletedActivity extends AppCompatActivity implements AbsListView.On
         setContentView(R.layout.activity_deleted);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        SqlScoutServer.create(this, getPackageName());
 
         //设置返回按钮:
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -48,7 +48,7 @@ public class DeletedActivity extends AppCompatActivity implements AbsListView.On
 
 
         DB = new NotesDB(this);
-        dbManager = new DatabaseManager(this);
+        //dbManager = new DatabaseManager(this);
         dbread = DB.getReadableDatabase();
 
         ShowDeletedList();
@@ -63,7 +63,7 @@ public class DeletedActivity extends AppCompatActivity implements AbsListView.On
 
     public void ShowDeletedList(){
         isDeletedNull();
-        String  sql = "select * from note where category ='"+CATEGORY_DELETED+"'";
+        String  sql = "select * from note where category ='"+ NotePad.CATEGORY_DELETED+"'";
         Cursor cursor = dbread.rawQuery(sql, null);
         //SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
         //SimpleCursor 最后一个参数 0
@@ -127,7 +127,7 @@ public class DeletedActivity extends AppCompatActivity implements AbsListView.On
                             case "recovery":{
                                 Cursor content = (Cursor) deletedview.getItemAtPosition(n);
                                 String id = content.getString(content.getColumnIndex("_id"));
-                                String recovery = "update note set category ='" + CATEGORY_NORMAL + "' where _id=" + id;
+                                String recovery = "update note set category ='" + NotePad.CATEGORY_NORMAL + "' where _id=" + id;
                                 dbread.execSQL(recovery);
                                 Toast.makeText(DeletedActivity.this, "恢复 "+content.getString(content.getColumnIndex("title")), Toast.LENGTH_SHORT).show();
                                 ShowDeletedList();
@@ -187,7 +187,7 @@ public class DeletedActivity extends AppCompatActivity implements AbsListView.On
         builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-            String setCategory = "delete from note where category ='" + CATEGORY_DELETED + "'";
+            String setCategory = "delete from note where category ='" + NotePad.CATEGORY_DELETED + "'";
             dbread.execSQL(setCategory);
             ShowDeletedList();
             }
@@ -203,9 +203,10 @@ public class DeletedActivity extends AppCompatActivity implements AbsListView.On
 
 
     public boolean isDeletedNull(){
-        String sql = "select * from note where category ='"+CATEGORY_DELETED+"'";
+        String sql = "select * from note where category ='"+ NotePad.CATEGORY_DELETED+"'";
         Log.d("sql",sql);
-        Cursor c = dbManager.executeSql(sql, null);
+        //Cursor c = dbManager.executeSql(sql, null);
+        Cursor c = dbread.rawQuery(sql, null);
         int number = c.getCount();
         Log.d("Note number",number+"");
         if(number == 0){

@@ -33,40 +33,22 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.FileNotFoundException;
+import com.idescout.sql.SqlScoutServer;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import edu.fjnu.birdie.midnotepad.Utils.NotePad;
 import edu.fjnu.birdie.midnotepad.Utils.NotesDB;
 
 public class noteEdit extends AppCompatActivity {
 
-    public static final String TABLE_NAME_NOTES = "note";
-    public static final String COLUMN_NAME_ID = "_id";
-    public static final String COLUMN_NAME_NOTE_TITLE = "title";
-    public static final String COLUMN_NAME_NOTE_CONTENT = "content";
-    public static final String COLUMN_NAME_NOTE_DATE = "date";
-
-    public static final String CATEGORY_NORMAL = "normal";
-    public static final String CATEGORY_IMPORTANT = "important";
-    public static final String CATEGORY_MEMO = "memo";
-    public static final String CATEGORY_NOTE = "note";
-    public static final String CATEGORY_SCHEDULE = "schedule";
-    public static final String CATEGORY_DELETED = "deleted";
-
-
     private String[] category = new String[] { "默认", "重要", "备忘", "笔记", "日程" };
-
-    //private TextView tv_edit_date;
-    //private Button btn_save1;
-    //private Button btn_cancel;
 
     private EditText et_content;
     private EditText et_title;
@@ -89,15 +71,9 @@ public class noteEdit extends AppCompatActivity {
         setContentView(R.layout.activity_edit);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        SqlScoutServer.create(this, getPackageName());
         //设置返回按钮:
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        //4.4标题栏显示时间 //这个版本打算只兼容5.0以上 所以暂时不考虑4.4
-        //tv_edit_date = (TextView)findViewById(R.id.tv_edit_date);
-        //Date date = new Date();
-        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-        //String dateString = sdf.format(date);
-        //tv_edit_date.setText(dateString);
 
         et_content = (EditText)findViewById(R.id.et_content);
         et_title   = (EditText)findViewById(R.id.et_title);
@@ -146,19 +122,14 @@ public class noteEdit extends AppCompatActivity {
             ImageSpan span = new ImageSpan(this, rbm);
             ss.setSpan(span, m.start(), m.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
-        et_content.setText(ss);
 
+        et_content.setText(ss);
         et_title.setText(last_title);
         //et_content.setText(last_content);
         //内容编辑栏的光标处于文字之后
         et_content.setSelection(et_content.getText().toString().length());
 
-
-
-
-
-
-                btn_addImage=(FloatingActionButton)findViewById(R.id.btn_add_image);
+        btn_addImage=(FloatingActionButton)findViewById(R.id.btn_add_image);
         btn_addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,25 +138,8 @@ public class noteEdit extends AppCompatActivity {
                 getImage.setType("image/*");
                 startActivityForResult(getImage, 1);
                 Log.d("ImageState",1+"");
-
             }
         });
-
-//        //兼容4.4实现保存和取消
-//        btn_save1 = (Button) findViewById(R.id.btn_save_old);
-//        btn_save1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//               saveData();
-//            }
-//        });
-//        btn_cancel = (Button) findViewById(R.id.btn_cancel);
-//        btn_cancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//            }
-//        });
 
     }
 
@@ -215,8 +169,6 @@ public class noteEdit extends AppCompatActivity {
         Log.d("COUNT",count+"");
         Log.d("ENTER_STATE",ENTER_STATE+"");
 
-
-
         //新建记事
         if(ENTER_STATE == 0){
             if(!content.equals("")){
@@ -233,20 +185,20 @@ public class noteEdit extends AppCompatActivity {
 //                        +" values("+count+","+"'"+ title +"'"+","+"'"+ content +"'"+","+"'"+ dateNum + "')";
                 //insert into note(_id,title,content,date) values("count,'title','content','dataNum')
                 //使用下述的方法不能输入 ' 这个符号  要使用Insert();
-                sql = "insert into " +NotesDB.TABLE_NAME_NOTES +"(" + COLUMN_NAME_ID + " ,"
-                        + COLUMN_NAME_NOTE_TITLE +","
-                        + COLUMN_NAME_NOTE_CONTENT + " ,"
-                        + COLUMN_NAME_NOTE_DATE + ")"
+                sql = "insert into " +NotePad.Notes.TABLE_NAME_NOTES +"(" + NotePad.Notes._ID + " ,"
+                        + NotePad.Notes.COLUMN_NAME_NOTE_TITLE +","
+                        + NotePad.Notes.COLUMN_NAME_NOTE_CONTENT + " ,"
+                        + NotePad.Notes.COLUMN_NAME_NOTE_DATE + ")"
                         +" values("+count+","+"'"+ title +"'"+","+"'"+ content +"'"+","+"'"+ dateNum + "')";
                 Log.d("LOG",sql);
                 //dbread.execSQL(sql);
                 //insert方法插入
                 ContentValues values  = new ContentValues();
                 //values.put(COLUMN_NAME_ID ,count);
-                values.put(COLUMN_NAME_NOTE_TITLE ,title);
-                values.put(COLUMN_NAME_NOTE_CONTENT ,content);
-                values.put(COLUMN_NAME_NOTE_DATE ,dateNum);
-                dbread.insert(TABLE_NAME_NOTES ,null,values);
+                values.put(NotePad.Notes.COLUMN_NAME_NOTE_TITLE ,title);
+                values.put(NotePad.Notes.COLUMN_NAME_NOTE_CONTENT ,content);
+                values.put(NotePad.Notes.COLUMN_NAME_NOTE_DATE ,dateNum);
+                dbread.insert(NotePad.Notes.TABLE_NAME_NOTES ,null,values);
                 Log.d("LOG",sql);
             }else {
                 Toast.makeText(this,"内容为空,笔记未保存",Toast.LENGTH_SHORT).show();
@@ -261,11 +213,11 @@ public class noteEdit extends AppCompatActivity {
             //dbread.execSQL(updatesqltitle);
             //使用update方法
             ContentValues values  = new ContentValues();;
-            values.put(COLUMN_NAME_NOTE_TITLE ,title);
-            values.put(COLUMN_NAME_NOTE_CONTENT ,content);
-            values.put(COLUMN_NAME_NOTE_DATE,dateNum);
+            values.put(NotePad.Notes.COLUMN_NAME_NOTE_TITLE ,title);
+            values.put(NotePad.Notes.COLUMN_NAME_NOTE_CONTENT ,content);
+            values.put(NotePad.Notes.COLUMN_NAME_NOTE_DATE,dateNum);
             String where = "_id="+id;
-            dbread.update(TABLE_NAME_NOTES ,values ,where, null);
+            dbread.update(NotePad.Notes.TABLE_NAME_NOTES ,values ,where, null);
         }
         Intent data = new Intent();
         setResult(2,data);
@@ -285,27 +237,27 @@ public class noteEdit extends AppCompatActivity {
                     int choose = which;
                     switch (which) {
                         case 0: {
-                            setCategory = "update note set category ='" + CATEGORY_NORMAL + "' where _id=" + id;
+                            setCategory = "update note set category ='" + NotePad.CATEGORY_NORMAL + "' where _id=" + id;
                             Log.d("EXE", setCategory);
                             break;
                         }
                         case 1: {
-                            setCategory = "update note set category ='" + CATEGORY_IMPORTANT + "' where _id=" + id;
+                            setCategory = "update note set category ='" + NotePad.CATEGORY_IMPORTANT + "' where _id=" + id;
                             Log.d("EXE", setCategory);
                             break;
                         }
                         case 2: {
-                            setCategory = "update note set category ='" + CATEGORY_MEMO + "' where _id=" + id;
+                            setCategory = "update note set category ='" + NotePad.CATEGORY_MEMO + "' where _id=" + id;
                             Log.d("EXE", setCategory);
                             break;
                         }
                         case 3: {
-                            setCategory = "update note set category ='" + CATEGORY_NOTE + "' where _id=" + id;
+                            setCategory = "update note set category ='" + NotePad.CATEGORY_NOTE + "' where _id=" + id;
                             Log.d("EXE", setCategory);
                             break;
                         }
                         case 4: {
-                            setCategory = "update note set category ='" + CATEGORY_SCHEDULE + "' where _id=" + id;
+                            setCategory = "update note set category ='" + NotePad.CATEGORY_SCHEDULE + "' where _id=" + id;
                             Log.d("EXE", setCategory);
                             break;
                         }

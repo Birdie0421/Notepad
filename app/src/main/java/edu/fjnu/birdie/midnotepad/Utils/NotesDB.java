@@ -10,16 +10,8 @@ import android.util.Log;
  */
 
 public class NotesDB extends SQLiteOpenHelper {
+
     private static NotesDB mInstance = null;
-    public static final String TABLE_NAME_NOTES = "note";
-    public static final String COLUMN_NAME_ID = "_id";
-    public static final String COLUMN_NAME_NOTE_TITLE = "title";
-    public static final String COLUMN_NAME_NOTE_CONTENT = "content";
-    public static final String COLUMN_NAME_NOTE_CATEGORY= "category";
-    public static final String COLUMN_NAME_NOTE_DATE = "date";
-
-    public static final String COLUMN_NAME_NOTE_CATEGORY_NORMAL= "normal";
-
 
     public NotesDB(Context context){
         super(context,"note",null,1);
@@ -27,18 +19,16 @@ public class NotesDB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db){
-        String sql = "CREATE TABLE " + TABLE_NAME_NOTES + "("
-                + COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + COLUMN_NAME_NOTE_TITLE +" TEXT NOT NULL DEFAULT\"\","
-                + COLUMN_NAME_NOTE_CONTENT + " TEXT NOT NULL DEFAULT\"\","
-                + COLUMN_NAME_NOTE_CATEGORY + " TEXT NOT NULL DEFAULT\"normal\","
-                + COLUMN_NAME_NOTE_DATE + " TEXT NOT NULL DEFAULT\"\"" + ")";
+        String sql = "CREATE TABLE " + NotePad.Notes.TABLE_NAME_NOTES + "("
+                + NotePad.Notes._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + NotePad.Notes.COLUMN_NAME_NOTE_TITLE +" TEXT NOT NULL DEFAULT\"\","
+                + NotePad.Notes.COLUMN_NAME_NOTE_CONTENT + " TEXT NOT NULL DEFAULT\"\","
+                + NotePad.Notes.COLUMN_NAME_NOTE_CATEGORY + " TEXT NOT NULL DEFAULT\"normal\","
+                + NotePad.Notes.COLUMN_NAME_NOTE_DATE + " TEXT NOT NULL DEFAULT\"\"" + ")";
         Log.d("SQL", sql);
         db.execSQL(sql);
 
         //初始化数据 ==提供帮助信息
-
-
     }
 
     @Override
